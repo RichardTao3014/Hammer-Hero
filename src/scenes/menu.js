@@ -4,7 +4,7 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('logo', './assets/img/Fix-It_Felix_Jr._Logo.png')
+        this.load.image('logo', './assets/img/Hammer-Hero.png')
         this.load.bitmapFont('gem_font', './assets/font/gem.png', './assets/font/gem.xml')
         this.load.audio('select', './assets/audio/select.wav')
     }
