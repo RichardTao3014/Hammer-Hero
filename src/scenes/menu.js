@@ -4,6 +4,7 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
+        //this.load.image('logo', './assets/img/Hammer-Hero.png')
         this.load.image('logo', './assets/img/Hammer-Hero.png')
         this.load.bitmapFont('gem_font', './assets/font/gem.png', './assets/font/gem.xml')
         this.load.audio('select', './assets/audio/select.wav')
@@ -11,7 +12,7 @@ class Menu extends Phaser.Scene {
 
     create() {
 
-        this.add.image(575, 300, 'logo').setOrigin(0.5)
+        this.add.image(400, 300, 'logo').setOrigin(0.5)
         this.add.bitmapText(centerX, 600, 'gem_font', 'Press SPACE to start', 18).setOrigin(0.5)
         this.add.bitmapText(centerX, 625, 'gem_font', 'Press UP for instructions / credits', 18).setOrigin(0.5)
         this.selectsound = this.sound.add('select')

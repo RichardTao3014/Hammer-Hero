@@ -3,7 +3,7 @@ class Play extends Phaser.Scene {
         super("playScene");
         this.playerlives = 3;
         this.lifeIcons = [];
-
+        this.Score = 150; 
     }
 
     preload() {
@@ -42,6 +42,12 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+
+        // Add Score text display
+        this.scoreText = this.add.text(20, 20, 'Score: ' + this.Score, {
+            fontSize: '32px',
+            fill: '#fff',
+            fontFamily: 'Arial'})
 
         // adding building pieces
         this.add.image(400, 431, 'building').setScale(2.5)
@@ -90,30 +96,30 @@ class Play extends Phaser.Scene {
         //adding the windows layer
         this.windowGroup = this.physics.add.staticGroup();
         // fourth level
-        this.addwindow(400, 273, 'halfbroken')
-        this.addwindow(225, 273, 'halfbroken')
+        this.addwindow(400, 273, 'broken')
+        this.addwindow(225, 273, 'broken')
         this.addwindow(300, 273, 'broken')
-        this.addwindow(500, 273, 'halfbroken')
-        this.addwindow(575, 273, 'halfbroken')
+        this.addwindow(500, 273, 'broken')
+        this.addwindow(575, 273, 'broken')
 
         // third level
-        this.addwindow(400, 373, 'halfbroken')
-        this.addwindow(225, 373, 'halfbroken')
+        this.addwindow(400, 373, 'broken')
+        this.addwindow(225, 373, 'broken')
         this.addwindow(300, 373, 'broken')
-        this.addwindow(500, 373, 'halfbroken')
+        this.addwindow(500, 373, 'broken')
         this.addwindow(575, 373, 'broken')
 
         // second level
         this.balcony = this.add.sprite(400, 490, 'balcony', 0).setScale(2.5)
-        this.addwindow(225, 488, 'halfbroken')
+        this.addwindow(225, 488, 'broken')
         this.addwindow(300, 488, 'broken')
-        this.addwindow(500, 488, 'halfbroken')
-        this.addwindow(575, 488, 'halfbroken')
+        this.addwindow(500, 488, 'broken')
+        this.addwindow(575, 488, 'broken')
 
         //first level
-        this.addwindow(225, 588, 'halfbroken')
+        this.addwindow(225, 588, 'broken')
         this.addwindow(300, 588, 'broken')
-        this.addwindow(500, 588, 'halfbroken')
+        this.addwindow(500, 588, 'broken')
         this.addwindow(575, 588, 'broken')
 
 
@@ -267,6 +273,8 @@ class Play extends Phaser.Scene {
             this.music.pause()
             this.gameoversound.play()
             this.scene.start('gameoverScene')
+            //console.log("Transferring Score to next scene:", this.Score);
+            this.registry.set('finalScore', this.Score);  // Storing scores
         }
 
         // checking if all the windows are fully fixed
@@ -274,6 +282,8 @@ class Play extends Phaser.Scene {
             this.music.pause()
             this.victorysound.play()
             this.scene.start('victoryScene')
+            //console.log("Transferring Score to next scene:", this.Score);
+            this.registry.set('finalScore', this.Score);  // Storing scores
         }
     }
 
@@ -296,6 +306,10 @@ class Play extends Phaser.Scene {
                     break
                 case 'halfbroken':
                     window.anims.play('fixed')
+                    //console.log("Score before update:", this.Score);
+                    this.Score += 10;
+                    //console.log("Score after update:", this.Score);
+                    this.updateScoreDisplay();
                     break
                 case 'broken':
                     window.anims.play('halfbroken')
@@ -304,6 +318,10 @@ class Play extends Phaser.Scene {
                     break
             }
         }
+    }
+
+    updateScoreDisplay() {
+        this.scoreText.setText('Score: ' + this.Score);  // Real-time update of Score display
     }
 
     handleWindowInteraction(player, window) {
@@ -348,6 +366,11 @@ class Play extends Phaser.Scene {
     handleBrickCollision(player, brick) {
         this.loseLife()
         brick.destroy()
+
+        // Decrease the score by 50 to ensure it does not fall below 0
+        this.Score = Math.max(0, this.Score - 50);
+        this.updateScoreDisplay();  // Update Score Display
+        //console.log("Player hit by brick! New Score:", this.Score); // Console debug information
     }
 
     checkForVictory() {
