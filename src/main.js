@@ -1,6 +1,7 @@
 /*
 Name: Richard Tao
 Game Name: Hammer Hero
+All the pictures in the game are made by myself.
 */
 
 let config = {
